@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼读乐园API测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .result { background: #f5f5f5; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>🎪 拼读乐园API测试</h1>
+    
+    <div class="test-section">
+        <h2>1. 登录测试</h2>
+        <input type="text" id="username" placeholder="用户名 (如: student1)" value="student1">
+        <input type="password" id="password" placeholder="密码" value="password123">
+        <button onclick="testLogin()">登录</button>
+        <div id="login-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. 获取作业列表</h2>
+        <button onclick="testHomeworkList()">获取作业列表</button>
+        <div id="homework-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. 获取学生提交记录</h2>
+        <button onclick="testSubmissions()">获取提交记录</button>
+        <div id="submissions-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. 文件上传测试</h2>
+        <input type="file" id="fileInput" accept="audio/*">
+        <button onclick="testFileUpload()">上传音频文件</button>
+        <div id="upload-result" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. 作业批改测试</h2>
+        <input type="text" id="submissionId" placeholder="提交ID">
+        <input type="number" id="score" placeholder="分数 (0-100)">
+        <textarea id="feedback" placeholder="评语"></textarea>
+        <button onclick="testGrading()">提交批改</button>
+        <div id="grading-result" class="result"></div>
+    </div>
+
+    <script>
+        let authToken = '';
+        let currentUser = '';
+
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('login-result');
+
+            try {
+                const response = await fetch('/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    authToken = data.token;
+                    currentUser = data.data;
+                    localStorage.setItem('user', JSON.stringify(data.data));
+                    resultDiv.innerHTML = `<div class="success">登录成功！用户: ${data.data.username}, 角色: ${data.data.role}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">登录失败: ${data.error?.message || '未知错误'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">请求异常: ${error.message}</div>`;
+            }
+        }
+
+        async function testHomeworkList() {
+            const resultDiv = document.getElementById('homework-result');
+
+            try {
+                const response = await fetch('/api/v1/homework');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const homeworks = data.data;
+                    resultDiv.innerHTML = `
+                        <div class="success">获取到 ${homeworks.length} 个作业</div>
+                        <pre>${JSON.stringify(homeworks, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">获取失败: ${data.error?.message || '未知错误'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">请求异常: ${error.message}</div>`;
+            }
+        }
+
+        async function testSubmissions() {
+            const resultDiv = document.getElementById('submissions-result');
+
+            try {
+                const response = await fetch('/api/v1/submissions');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const submissions = data.data;
+                    resultDiv.innerHTML = `
+                        <div class="success">获取到 ${submissions.length} 个提交记录</div>
+                        <pre>${JSON.stringify(submissions, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">获取失败: ${data.error?.message || '未知错误'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">请求异常: ${error.message}</div>`;
+            }
+        }
+
+        async function testFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('upload-result');
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = `<div class="error">请选择一个文件</div>`;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('type', 'audio');
+
+            try {
+                const response = await fetch('/api/v1/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">文件上传成功！</div>
+                        <pre>${JSON.stringify(data.data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">上传失败: ${data.error?.message || '未知错误'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">请求异常: ${error.message}</div>`;
+            }
+        }
+
+        async function testGrading() {
+            const submissionId = document.getElementById('submissionId').value;
+            const score = document.getElementById('score').value;
+            const feedback = document.getElementById('feedback').value;
+            const resultDiv = document.getElementById('grading-result');
+
+            if (!submissionId || !score) {
+                resultDiv.innerHTML = `<div class="error">请填写提交ID和分数</div>`;
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/v1/submissions', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        submissionId,
+                        score: parseInt(score),
+                        feedback,
+                        gradedBy: 'teacher-profile-1'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="success">批改成功！</div>
+                        <pre>${JSON.stringify(data.data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">批改失败: ${data.error?.message || '未知错误'}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">请求异常: ${error.message}</div>`;
+            }
+        }
+
+        // 页面加载时自动检查登录状态
+        window.onload = function() {
+            const savedUser = localStorage.getItem('user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('username').value = user.username || '';
+                document.getElementById('login-result').innerHTML = 
+                    `<div class="success">已登录用户: ${user.username}, 角色: ${user.role}</div>`;
+            }
+        };
+    </script>
+</body>
+</html>

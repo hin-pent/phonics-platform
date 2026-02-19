@@ -1,0 +1,73 @@
+
+> phonics-platform@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 80736, using available port 3004 instead.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3004
+- Network:       http://192.168.101.15:3004
+- Environments: .env
+
+✓ Starting...
+✓ Ready in 690ms
+ GET / 200 in 3.2s (compile: 3.0s, render: 143ms)
+ POST /api/v1/auth/login-simple 404 in 441ms (compile: 387ms, render: 53ms)
+Persisting failed: Unable to write SST file 00000043.sst
+
+Caused by:
+    系统找不到指定的路径。 (os error 3)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+
+thread 'tokio-runtime-worker' (26144) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\mod.rs:1354:30:
+Failed to lookup task id: Looking up task id for CachedTaskType { native_fn: NativeFunction { name: "DirectoryTree::into_plain", global_name: "next-core@next_core::app_structure::DirectoryTree::into_plain", .. }, this: Some(RawVc::TaskCell(88994, "next_core::app_structure::DirectoryTree#0")), arg: () } from database failed
+
+Caused by:
+    0: Unable to open static sorted file referenced from 00000041.meta
+    1: Unable to open static sorted file 00000036.sst
+    2: 系统找不到指定的文件。 (os error 2)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-runtime-worker' (26144) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Data for DirectoryTree::into_plain (TaskId 183))
+
+Caused by:
+    0: Looking up data for TaskId 183 from database failed
+    1: Unable to open static sorted file referenced from 00000040.meta
+    2: Unable to open static sorted file 00000032.sst
+    3: 系统找不到指定的文件。 (os error 2)
+
+thread 'tokio-runtime-worker' (26144) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Data for DirectoryTree::into_plain (TaskId 183))
+
+Caused by:
+    0: Looking up data for TaskId 183 from database failed
+    1: Unable to open static sorted file referenced from 00000040.meta
+    2: Unable to open static sorted file 00000032.sst
+    3: 系统找不到指定的文件。 (os error 2)
+
+thread 'tokio-runtime-worker' (124048) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Meta for directory_tree_to_entrypoints_internal (TaskId 285))
+
+Caused by:
+    0: Looking up data for TaskId 285 from database failed
+    1: Unable to open static sorted file referenced from 00000039.meta
+    2: Unable to open static sorted file 00000034.sst
+    3: 系统找不到指定的文件。 (os error 2)
+
+thread 'tokio-runtime-worker' (124048) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\operation\mod.rs:156:17:
+Failed to restore task data (corrupted database or bug): Data for directory_tree_to_loader_tree (TaskId 338))
+
+Caused by:
+    0: Looking up data for TaskId 338 from database failed
+    1: Unable to open static sorted file referenced from 00000040.meta
+    2: Unable to open static sorted file 00000032.sst
+    3: 系统找不到指定的文件。 (os error 2)
+
+thread 'tokio-runtime-worker' (78168) panicked at C:\actions-runner\_work\next.js\next.js\turbopack\crates\turbo-tasks-backend\src\backend\mod.rs:963:22:
+Failed to lookup task type: Looking up task type for TaskId 285 from database failed
+
+Caused by:
+    DecompressionFailed
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+^C

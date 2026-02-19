@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 彻底隐藏密码输入框的显示/隐藏按钮 */
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
+}
+
+input[type="password"]::-webkit-caps-lock-indicator {
+  display: none;
+}
+
+input[type="password"]::-webkit-reveal-password-button {
+  display: none;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
+}
+
+input[type="password"]::-webkit-password-auto-fill-button {
+  display: none;
+}

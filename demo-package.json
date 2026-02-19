@@ -1,0 +1,11 @@
+{
+  "name": "phonics-platform-demo",
+  "version": "1.0.0",
+  "main": "demo.html",
+  "scripts": {
+    "start": "python -m http.server 8080"
+  },
+  "dependencies": {
+    "http.server": "^0.6.3"
+  }
+}

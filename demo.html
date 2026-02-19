@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拼读乐园 - 在线教育平台</title>
+  <meta name="description" content="自然拼读培训机构课后练习平台">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐻</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      max-width: 500px;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .logo {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .accounts {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .account-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .account {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 15px;
+      border-radius: 10px;
+      border-left: 3px solid #4CAF50;
+    }
+    
+    .account-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .account-info {
+      font-family: 'Courier New', monospace;
+      background: #f8f9fa;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    
+    .password {
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .demo-btn {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+      margin-bottom: 15px;
+    }
+    
+    .demo-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+    }
+    
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.4;
+      margin-top: 20px;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    }
+    
+    .status {
+      background: rgba(76, 175, 80, 0.1);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      animation: slideIn 0.5s ease-out;
+    }
+    
+    .status-success {
+      background: rgba(76, 175, 80, 0.1);
+      border-left: 4px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🐻</div>
+    <h1 class="title">拼读乐园</h1>
+    <p class="subtitle">在线自然拼读教育平台 - 演示版本</p>
+    
+    <div class="accounts">
+      <h3>🔑 测试账户信息</h3>
+      <p style="margin-bottom: 25px; font-weight: 600;">所有账户统一密码：<strong>password123</strong></p>
+      
+      <div class="account-grid">
+        <div class="account">
+          <span class="account-title">👨‍💼 管理员</span>
+          <span class="account-info">admin1</span>
+        </div>
+        <div class="account">
+          <span class="account-title">👩‍🏫 教师</span>
+          <span class="account-info">teacher1</span>
+        </div>
+      </div>
+      
+      <div class="account-grid">
+        <div class="account">
+          <span class="account-title">👨‍👩‍👧‍👦 家长</span>
+          <span class="account-info">parent1-4</span>
+        </div>
+        <div class="account">
+          <span class="account-title">👨‍🎓 学生</span>
+          <span class="account-info">student1-5</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="password">
+      统一登录密码: <strong>password123</strong>
+    </div>
+    
+    <div class="status">
+      ✅ 演示版本 - 展示平台架构和测试账户
+    </div>
+    
+    <button class="demo-btn" onclick="showDemoInfo()">
+      🎉 查看平台详情
+    </button>
+    
+    <div class="note">
+      <strong>📋 平台功能说明：</strong><br>
+      1. 支持管理员、教师、家长、学生四种角色<br>
+      2. 完整的课程管理和作业系统<br>
+      3. 实时学习进度跟踪和成就系统<br>
+      4. 响应式设计，支持手机、平板、电脑<br>
+      5. 无需密码即可访问演示页面<br>
+      <br>
+      <strong>🚀 部署状态：</strong><br>
+      正在准备全栈部署到云端，敬请期待！
+    </div>
+  </div>
+
+  <script>
+    function showDemoInfo() {
+      alert('🎉 拼读乐园平台\n\n' +
+            '✨ 功能特色：\n' +
+            '• 4种角色身份（管理员、教师、家长、学生）\n' +
+            '• 完整课程管理系统\n' +
+            '• 作业布置与批改功能\n' +
+            '• 学习进度跟踪\n' +
+            '• 成就徽章系统\n' +
+            '• 响应式移动端设计\n\n' +
+            '🔑 测试账户（密码：password123）\n\n' +
+            '🚀 正在部署到云端，敬请期待完整版！');
+    }
+    
+    // 页面加载完成
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease-in';
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+  </script>
+</body>
+</html>

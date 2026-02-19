@@ -1,0 +1,458 @@
+/* 拼读乐园 - 卡通教育风格设计系统 */
+
+/* ===== 颜色系统 ===== */
+:root {
+  /* 主色调 - 温暖活泼 */
+  --primary-50: #fff7ed;
+  --primary-100: #ffedd5;
+  --primary-200: #fed7aa;
+  --primary-300: #fdba74;
+  --primary-400: #fb923c;
+  --primary-500: #f97316;
+  --primary-600: #ea580c;
+  --primary-700: #c2410c;
+  --primary-800: #9a3412;
+  --primary-900: #7c2d12;
+
+  /* 辅助色 - 童趣多彩 */
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --green-400: #4ade80;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+  --yellow-400: #facc15;
+  --yellow-500: #eab308;
+  --purple-400: #c084fc;
+  --purple-500: #a855f7;
+  --purple-600: #9333ea;
+  --purple-700: #7c3aed;
+}
+
+/* ===== 字体系统 ===== */
+.font-cartoon {
+  font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.font-heading {
+  font-family: 'Fredoka One', 'Comic Sans MS', sans-serif;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ===== 圆角系统 ===== */
+.rounded-cartoon {
+  border-radius: 24px;
+}
+
+.rounded-cartoon-lg {
+  border-radius: 32px;
+}
+
+.rounded-cartoon-xl {
+  border-radius: 48px;
+}
+
+.rounded-cartoon-2xl {
+  border-radius: 64px;
+}
+
+/* ===== 卡通动画 ===== */
+@keyframes bounce-cartoon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes wiggle-cartoon {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes float-cartoon {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-cartoon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes slide-in-cartoon {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-bounce-cartoon {
+  animation: bounce-cartoon 2s infinite;
+}
+
+.animate-wiggle-cartoon {
+  animation: wiggle-cartoon 1s ease-in-out infinite;
+}
+
+.animate-float-cartoon {
+  animation: float-cartoon 3s ease-in-out infinite;
+}
+
+.animate-pulse-cartoon {
+  animation: pulse-cartoon 2s infinite;
+}
+
+.animate-slide-in-cartoon {
+  animation: slide-in-cartoon 0.5s ease-out;
+}
+
+/* ===== 卡通按钮 ===== */
+.btn-cartoon {
+  font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 32px;
+  background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 50%, #fb923c 100%);
+  border: 3px solid #ea580c;
+  box-shadow: 
+    0 4px 0 #c2410c,
+    0 8px 15px rgba(251, 146, 60, 0.3);
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-cartoon:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 0 #c2410c,
+    0 12px 20px rgba(251, 146, 60, 0.4);
+}
+
+.btn-cartoon:active {
+  transform: translateY(2px);
+  box-shadow: 
+    0 2px 0 #c2410c,
+    0 4px 10px rgba(251, 146, 60, 0.3);
+}
+
+.btn-cartoon::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translate(-100%, -100%);
+  transition: transform 0.6s;
+}
+
+.btn-cartoon:hover::before {
+  transform: rotate(45deg) translate(100%, 100%);
+}
+
+/* 按钮变体 */
+.btn-cartoon-blue {
+  background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 50%, #bfdbfe 100%);
+  border-color: #1d4ed8;
+  box-shadow: 
+    0 4px 0 #1d4ed8,
+    0 8px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-cartoon-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+  border-color: #15803d;
+  box-shadow: 
+    0 4px 0 #15803d,
+    0 8px 15px rgba(34, 197, 94, 0.3);
+}
+
+.btn-cartoon-purple {
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #ddd6fe 100%);
+  border-color: #7c3aed;
+  box-shadow: 
+    0 4px 0 #7c3aed,
+    0 8px 15px rgba(168, 85, 247, 0.3);
+}
+
+/* ===== 卡通卡片 ===== */
+.card-cartoon {
+  background-color: white;
+  border-radius: 48px;
+  padding: 1.5rem;
+  box-shadow: 
+    0 10px 15px -3px rgba(251, 146, 60, 0.1),
+    0 4px 6px -2px rgba(251, 146, 60, 0.05),
+    0 20px 25px -5px rgba(251, 146, 60, 0.1);
+  border: 3px solid #fed7aa;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-cartoon::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #fb923c, #facc15, #60a5fa, #4ade80);
+  border-radius: 32px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card-cartoon:hover::before {
+  opacity: 0.3;
+}
+
+.card-cartoon-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 16px;
+  border-bottom: 3px dashed #fed7aa;
+}
+
+.card-cartoon-title {
+  font-family: 'Fredoka One', 'Comic Sans MS', sans-serif;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  font-size: 1.5rem;
+  color: #c2410c;
+}
+
+/* 卡通变体 */
+.card-cartoon-blue {
+  border-color: #dbeafe;
+}
+
+.card-cartoon-blue .card-cartoon-title {
+  color: #1d4ed8;
+}
+
+.card-cartoon-green {
+  border-color: #dcfce7;
+}
+
+.card-cartoon-green .card-cartoon-title {
+  color: #15803d;
+}
+
+.card-cartoon-purple {
+  border-color: #ede9fe;
+}
+
+.card-cartoon-purple .card-cartoon-title {
+  color: #7c3aed;
+}
+
+/* ===== 卡通输入框 ===== */
+.input-cartoon {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 32px;
+  font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 1.125rem;
+  border: 3px solid #fed7aa;
+  background: #fff7ed;
+  color: #7c2d12;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.input-cartoon:focus {
+  border-color: #f97316;
+  background: white;
+  box-shadow: 0 0 0 4px #fff7ed;
+  transform: scale(1.02);
+}
+
+.input-cartoon::placeholder {
+  color: #fb923c;
+  font-style: italic;
+}
+
+/* ===== 卡通进度条 ===== */
+.progress-cartoon {
+  width: 100%;
+  background-color: #e5e5e5;
+  border-radius: 64px;
+  height: 1.5rem;
+  overflow: hidden;
+  border: 2px solid #d4d4d4;
+  position: relative;
+}
+
+.progress-cartoon-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fb923c, #f97316);
+  border-radius: 24px;
+  transition: width 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-cartoon-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: progress-shine 2s infinite;
+}
+
+@keyframes progress-shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ===== 卡通徽章 ===== */
+.badge-cartoon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-family: 'Comic Sans MS', 'Segoe UI', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+  font-weight: bold;
+  border: 2px solid currentColor;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.badge-cartoon-orange {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%);
+  color: #c2410c;
+  border-color: #f97316;
+}
+
+.badge-cartoon-blue {
+  background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 50%, #bfdbfe 100%);
+  color: #1d4ed8;
+  border-color: #3b82f6;
+}
+
+.badge-cartoon-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+  color: #15803d;
+  border-color: #22c55e;
+}
+
+.badge-cartoon-purple {
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #ddd6fe 100%);
+  color: #7c3aed;
+  border-color: #a855f7;
+}
+
+/* ===== 卡通图标 ===== */
+.icon-cartoon {
+  font-size: 2.25rem;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.icon-cartoon:hover {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.icon-cartoon-bounce:hover {
+  animation: bounce-cartoon 1s;
+}
+
+.icon-cartoon-wiggle:hover {
+  animation: wiggle-cartoon 1s;
+}
+
+/* ===== 卡通背景图案 ===== */
+.bg-pattern-cartoon {
+  background-color: #fff7ed;
+  background-image: 
+    radial-gradient(circle at 20% 80%, #fef3c7 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, #dbeafe 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, #dcfce7 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #ede9fe 0%, transparent 50%);
+  background-size: 300px 300px;
+  background-position: 0 0, 100px 100px, 200px 0, 300px 200px;
+  background-repeat: repeat;
+}
+
+/* ===== 卡通边框装饰 ===== */
+.border-decoration-cartoon {
+  border: 3px solid #fdba74;
+  border-radius: 24px;
+  position: relative;
+  background: white;
+  padding: 1.5rem;
+}
+
+.border-decoration-cartoon::before,
+.border-decoration-cartoon::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fb923c;
+  border: 3px solid white;
+  border-radius: 50%;
+}
+
+.border-decoration-cartoon::before {
+  top: -12px;
+  left: -12px;
+}
+
+.border-decoration-cartoon::after {
+  bottom: -12px;
+  right: -12px;
+}
+
+/* ===== 响应式调整 ===== */
+@media (max-width: 768px) {
+  .rounded-cartoon {
+    border-radius: 16px;
+  }
+  
+  .rounded-cartoon-lg {
+    border-radius: 20px;
+  }
+  
+  .btn-cartoon {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .input-cartoon {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}

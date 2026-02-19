@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>API Test</h1>
+    
+    <h2>Test Simplified Login API</h2>
+    <button onclick="testLogin()">Test Login</button>
+    <pre id="result"></pre>
+    <pre id="test-route-result"></pre>
+    <h3>Test Route Response:</h3>
+
+    <script>
+        async function testLogin() {
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                console.log('Starting API test...');
+                
+                const requestData = {
+                    username: 'student1',
+                    password: 'password123',
+                    role: 'STUDENT'
+                };
+                
+                console.log('Request data:', requestData);
+                
+                const response = await fetch('/api/v1/auth/login-simple', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData),
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+                resultDiv.style.color = data.success ? 'green' : 'red';
+                
+                // 测试简单路由
+                try {
+                    const testResponse = await fetch('/api/test', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ test: 'hello' })
+                    });
+                    const testData = await testResponse.json();
+                    console.log('Test route response:', testData);
+                    document.getElementById('test-route-result').textContent = JSON.stringify(testData);
+                } catch (e) {
+                    console.error('Test route error:', e);
+                    document.getElementById('test-route-result').textContent = 'Test route failed: ' + e.message;
+                }
+                
+            } catch (error) {
+                console.error('Request failed:', error);
+                resultDiv.textContent = 'Request failed: ' + error.message;
+                resultDiv.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model User {
+  id          String   @id @default(cuid())
+  username    String   @unique
+  email       String   @unique
+  passwordHash String  @map("password_hash")
+  role        UserRole
+  status      UserStatus @default(ACTIVE)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // 关系
+  studentProfile   StudentProfile?
+  teacherProfile   TeacherProfile?
+  parentProfile    ParentProfile?
+  notifications    Notification[]
+  notificationPrefs NotificationPreferences?
+  managedInstitution Institution? @relation("InstitutionAdmin")
+  studentChildren  StudentProfile[] @relation("StudentParent")
+
+  @@map("users")
+}
+
+// 学生档案表
+model StudentProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique @map("user_id")
+  realName       String   @map("real_name")
+  age            Int
+  grade          String
+  enrollmentDate DateTime @default(now()) @map("enrollment_date")
+  parentId       String?  @map("parent_id")
+
+  // 关系
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent         User?         @relation("StudentParent", fields: [parentId], references: [id])
+  classes        StudentClass[]
+  submissions    Submission[]
+  practiceRecords PracticeRecord[]
+  learningProgress LearningProgress[]
+
+  @@map("student_profiles")
+}
+
+// 教师档案表
+model TeacherProfile {
+  id           String   @id @default(cuid())
+  userId       String   @unique @map("user_id")
+  realName     String   @map("real_name")
+  employeeId   String   @unique @map("employee_id")
+  subjects     String
+  hireDate     DateTime @default(now()) @map("hire_date")
+
+  // 关系
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classes      Class[]
+  homework     Homework[]
+
+  @@map("teacher_profiles")
+}
+
+// 家长档案表
+model ParentProfile {
+  id         String   @id @default(cuid())
+  userId     String   @unique @map("user_id")
+  realName   String   @map("real_name")
+  phone      String
+  relationship String
+
+  // 关系
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("parent_profiles")
+}
+
+// 机构表
+model Institution {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  address     String
+  contactInfo String   @map("contact_info")
+  adminUserId String   @unique @map("admin_user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // 关系
+  adminUser   User     @relation("InstitutionAdmin", fields: [adminUserId], references: [id])
+  classes     Class[]
+  courses     Course[]
+
+  @@map("institutions")
+}
+
+// 班级表
+model Class {
+  id            String   @id @default(cuid())
+  institutionId String   @map("institution_id")
+  name          String
+  grade         String
+  teacherId     String   @map("teacher_id")
+  maxStudents   Int      @default(30) @map("max_students")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // 关系
+  institution   Institution @relation(fields: [institutionId], references: [id])
+  teacher       TeacherProfile @relation(fields: [teacherId], references: [id])
+  students      StudentClass[]
+  homework      Homework[]
+
+  @@map("classes")
+}
+
+// 学生班级关系表
+model StudentClass {
+  id            String   @id @default(cuid())
+  studentId     String   @map("student_id")
+  classId       String   @map("class_id")
+  enrollmentDate DateTime @default(now()) @map("enrollment_date")
+  status        String   @default("active")
+
+  // 关系
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class   Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, classId])
+  @@map("student_classes")
+}
+
+// 课程表
+model Course {
+  id              String   @id @default(cuid())
+  institutionId   String   @map("institution_id")
+  name            String
+  description     String
+  difficultyLevel String   @map("difficulty_level")
+  createdBy       String   @map("created_by")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  // 关系
+  institution Institution @relation(fields: [institutionId], references: [id])
+  lessons     Lesson[]
+  homework    Homework[]
+  learningProgress LearningProgress[]
+
+  @@map("courses")
+}
+
+// 课时表
+model Lesson {
+  id                  String   @id @default(cuid())
+  courseId            String   @map("course_id")
+  title               String
+  content            String
+  orderIndex          Int      @map("order_index")
+  multimediaResources String @map("multimedia_resources")
+
+  // 关系
+  course       Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  homework     Homework[]
+  practiceRecords PracticeRecord[]
+
+  @@map("lessons")
+}
+
+// 作业表
+model Homework {
+  id          String   @id @default(cuid())
+  classId     String   @map("class_id")
+  title       String
+  description String
+  type        HomeworkType
+  dueDate     DateTime @map("due_date")
+  teacherId   String   @map("teacher_id")
+  lessonId    String?  @map("lesson_id")
+  courseId    String?  @map("course_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // 关系
+  class       Class        @relation(fields: [classId], references: [id])
+  teacher     TeacherProfile @relation(fields: [teacherId], references: [id])
+  lesson      Lesson?      @relation(fields: [lessonId], references: [id])
+  course      Course?      @relation(fields: [courseId], references: [id])
+  submissions Submission[]
+
+  @@map("homework")
+}
+
+// 作业提交表
+model Submission {
+  id           String    @id @default(cuid())
+  homeworkId   String    @map("homework_id")
+  studentId    String    @map("student_id")
+  content      String
+  filePath     String?   @map("file_path")
+  submittedAt  DateTime  @default(now()) @map("submitted_at")
+  score        Int?
+  feedback     String?
+  gradedAt     DateTime? @map("graded_at")
+  gradedBy     String?   @map("graded_by")
+
+  // 关系
+  homework     Homework       @relation(fields: [homeworkId], references: [id], onDelete: Cascade)
+  student      StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([homeworkId, studentId])
+  @@map("submissions")
+}
+
+// 练习记录表
+model PracticeRecord {
+  id            String   @id @default(cuid())
+  studentId     String   @map("student_id")
+  lessonId      String   @map("lesson_id")
+  practiceType  String   @map("practice_type")
+  score         Int
+  duration      Int      @map("duration") // 分钟
+  completedAt   DateTime @default(now()) @map("completed_at")
+
+  // 关系
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson  Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("practice_records")
+}
+
+// 学习进度表
+model LearningProgress {
+  id              String   @id @default(cuid())
+  studentId       String   @map("student_id")
+  courseId        String   @map("course_id")
+  completionRate  Float    @map("completion_rate") // 0-100
+  lastAccessedAt  DateTime @default(now()) @map("last_accessed_at")
+
+  // 关系
+  student StudentProfile @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course  Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@map("learning_progress")
+}
+
+// 知识点表
+model KnowledgePoint {
+  id             String   @id @default(cuid())
+  name           String
+  category       String
+  difficultyLevel Int     @map("difficulty_level")
+  prerequisites  String @default("")
+  description    String
+
+  @@map("knowledge_points")
+}
+
+// 消息通知表
+model Notification {
+  id           String           @id @default(cuid())
+  userId       String           @map("user_id")
+  type         NotificationType
+  title        String
+  content      String
+  relatedType  String?          @map("related_type")
+  relatedId    String?          @map("related_id")
+  isRead       Boolean          @default(false) @map("is_read")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  expiresAt    DateTime?        @map("expires_at")
+
+  // 关系
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// 通知设置表
+model NotificationPreferences {
+  id                          String @id @default(cuid())
+  userId                      String @unique @map("user_id")
+  allowHomeworkNotifications  Boolean @default(true) @map("allow_homework_notifications")
+  allowGradeNotifications     Boolean @default(true) @map("allow_grade_notifications")
+  allowSystemNotifications    Boolean @default(true) @map("allow_system_notifications")
+
+  // 关系
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+// 枚举定义
+enum UserRole {
+  STUDENT
+  TEACHER
+  PARENT
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum HomeworkType {
+  QUIZ
+  AUDIO_RECORDING
+  DRAG_DROP
+  TEXT_SUBMISSION
+  MULTIPLE_CHOICE
+}
+
+enum NotificationType {
+  HOMEWORK_ASSIGNED
+  HOMEWORK_GRADED
+  SYSTEM_ANNOUNCEMENT
+  PROGRESS_UPDATE
+  REMINDER
+}
