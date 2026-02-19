@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       status: user.status
     };
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       data: {
         token,
@@ -95,6 +95,17 @@ export async function POST(request: NextRequest) {
       message: '登录成功！欢迎来到拼读乐园 🌟',
       timestamp: new Date().toISOString(),
     }, { status: 200 });
+
+    // 设置 cookie
+    response.cookies.set('token', token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 86400,
+      path: '/',
+    });
+
+    return response;
 
   } catch (error) {
     console.error('❌ 登录失败:', error);
