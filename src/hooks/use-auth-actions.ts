@@ -28,6 +28,9 @@ export function useAuthActions() {
 
       const data: ApiResponse<LoginResponse> = await response.json();
 
+      console.log('Response status:', response.status);
+      console.log('Response data:', data);
+
       if (data.success && data.data) {
         // 保存认证信息
         storage.set('token', data.data.token);
@@ -44,7 +47,8 @@ export function useAuthActions() {
         return { success: false, error: data.error?.message };
       }
     } catch (err) {
-      const errorMessage = '网络错误，请稍后重试';
+      console.error('Login error:', err);
+      const errorMessage = err instanceof Error ? err.message : '网络错误，请稍后重试';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
