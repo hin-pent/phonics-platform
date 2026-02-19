@@ -31,7 +31,11 @@ export function useAuthActions() {
         storage.set('user', data.data.user);
 
         const role = credentials.role.toLowerCase();
-        window.location.href = `/dashboard/${role}`;
+        
+        // 延迟跳转确保状态更新完成
+        setTimeout(() => {
+          window.location.replace('/dashboard/' + role);
+        }, 100);
         
         return { success: true };
       } else {
