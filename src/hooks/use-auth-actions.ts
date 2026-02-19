@@ -14,10 +14,7 @@ export function useAuthActions() {
     setIsLoading(true);
     setError(null);
 
-    console.log('Login attempt with credentials:', credentials);
-
     try {
-      // 临时使用简化的登录API
       const response = await fetch('/api/v1/auth/login-simple', {
         method: 'POST',
         headers: {
@@ -28,22 +25,13 @@ export function useAuthActions() {
 
       const data: ApiResponse<LoginResponse> = await response.json();
 
-      console.log('Response status:', response.status);
-      console.log('Response data:', data);
-
       if (data.success && data.data) {
-        // 保存认证信息
         storage.set('token', data.data.token);
         storage.set('refreshToken', data.data.refreshToken);
         storage.set('user', data.data.user);
 
-        // 跳转到对应的仪表板
         const role = credentials.role.toLowerCase();
-        const redirectPath = `/dashboard/${role}`;
-        console.log('Attempting to redirect to:', redirectPath);
-        
-        // 使用 window.location 进行完整导航
-        window.location.href = redirectPath;
+        window.location.href = `/dashboard/${role}`;
         
         return { success: true };
       } else {
@@ -51,8 +39,7 @@ export function useAuthActions() {
         return { success: false, error: data.error?.message };
       }
     } catch (err) {
-      console.error('Login error:', err);
-      const errorMessage = err instanceof Error ? err.message : '网络错误，请稍后重试';
+      const errorMessage = '网络错误，请稍后重试';
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
