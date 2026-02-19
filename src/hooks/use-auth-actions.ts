@@ -42,8 +42,8 @@ export function useAuthActions() {
         const redirectPath = `/dashboard/${role}`;
         console.log('Attempting to redirect to:', redirectPath);
         
-        router.push(redirectPath);
-        console.log('Redirect called');
+        // 使用 window.location 进行完整导航
+        window.location.href = redirectPath;
         
         return { success: true };
       } else {
