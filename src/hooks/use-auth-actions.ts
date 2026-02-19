@@ -39,7 +39,14 @@ export function useAuthActions() {
 
         // 跳转到对应的仪表板
         const role = credentials.role.toLowerCase();
-        router.push(`/dashboard/${role}`);
+        const redirectPath = `/dashboard/${role}`;
+        console.log('Attempting to redirect to:', redirectPath);
+        
+        router.push(redirectPath).then(() => {
+          console.log('Redirect successful');
+        }).catch((err) => {
+          console.error('Redirect failed:', err);
+        });
         
         return { success: true };
       } else {
