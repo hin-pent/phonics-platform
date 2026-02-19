@@ -42,11 +42,8 @@ export function useAuthActions() {
         const redirectPath = `/dashboard/${role}`;
         console.log('Attempting to redirect to:', redirectPath);
         
-        router.push(redirectPath).then(() => {
-          console.log('Redirect successful');
-        }).catch((err) => {
-          console.error('Redirect failed:', err);
-        });
+        router.push(redirectPath);
+        console.log('Redirect called');
         
         return { success: true };
       } else {
